@@ -14,13 +14,26 @@ const Users = mongoose.model('Users', Schema.UserSchema);
 
 // 用户注册，向数据库中添加用户数据
 router.post('/register', (req, res) => {
+    if (JSON.stringify(req.body) == '{}') {
+        res.status(200).json({ code: '01', message: '参数错误' });
+        return
+    }
     const newUser = new Users({ // 用户传参
         name: req.body.name,
         password: require('crypto').createHash('md5').update(req.body.password).digest('hex'),
     });
     const name = req.body.name;
-    Users.find({ name: name }, (err, docs) => {
-        if (docs.length > 0) {
+    const password = req.body.password;
+    if (!name) {
+        res.status(200).json({ code: '01', message: '用户名不能为空' });
+        return
+    }
+    if (!password) {
+        res.status(200).json({ code: '01', message: '密码不能为空' });
+        return
+    }
+    Users.find({ name: name }, (err, users) => {
+        if (users.length > 0) {
             res.send({ isSuccess: false, message: '用户名已存在' })
         } else { // 向Users集合中保存数据
             newUser.save(err => {
@@ -35,7 +48,18 @@ router.post('/login', (req, res) => {
     let _user = req.body;
     let name = _user.name;
     let password = require('crypto').createHash('md5').update(_user.password).digest('hex');
-
+    if (JSON.stringify(_user) == '{}') {
+        res.status(200).json({ code: '01', message: '参数错误' });
+        return
+    }
+    if (!name) {
+        res.status(200).json({ code: '01', message: '用户名不能为空' });
+        return
+    }
+    if (!password) {
+        res.status(200).json({ code: '01', message: '密码不能为空' });
+        return
+    }
     Users.findOne({ name: name }, (err, user) => {
         if (err) {
             console.log(err);
@@ -69,7 +93,7 @@ router.get('/getInfo', (req, res) => {
 //退出登录
 router.get('/logout', (req, res) => {
     req.session.user = null
-    res.status(200).json({code:'00',message:'退出成功'});
+    res.status(200).json({ code: '00', message: '退出成功' });
 });
 
 module.exports = router

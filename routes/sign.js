@@ -83,7 +83,7 @@ router.get('/getInfo', (req, res) => {
         return
     }
     let name = req.session.user.name;
-    Users.findOne({}, { password: 0 }, (err, user) => {//排除密码字段
+    Users.findOne({name:name}, { password: 0 }, (err, user) => {//排除密码字段
         if (err) {
             console.log(err);
         }

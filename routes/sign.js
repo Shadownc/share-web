@@ -87,7 +87,7 @@ router.get('/getInfo', (req, res) => {
         if (err) {
             console.log(err);
         }
-        res.status(200).json(user);
+        res.status(200).json({code:'00',userInfo:user});
     });
 });
 //退出登录

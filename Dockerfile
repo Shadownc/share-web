@@ -15,4 +15,5 @@ RUN npm install
 EXPOSE 3000
 
 # 容器启动时执行的命令
-CMD [ "pm2", "restart", "/srv/api/index.js" ]
+#CMD [ "pm2", "restart", "/srv/api/index.js" ]
+CMD [ "pm2-runtime", "/srv/api/index.js" ]

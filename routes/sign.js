@@ -95,8 +95,5 @@ router.get('/logout', (req, res) => {
     req.session.user = null
     res.status(200).json({ code: '00', message: '退出成功' });
 });
-router.get('/test', (req, res) => {
-    res.status(200).json({ code: '00', message: 'test' });
-});
 
 module.exports = router

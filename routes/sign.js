@@ -92,7 +92,8 @@ router.get('/getInfo', (req, res) => {
 });
 //退出登录
 router.get('/logout', (req, res) => {
-    req.session.user = null
+    req.session.user = null;
+    req.session.maxAge=0;
     res.status(200).json({ code: '00', message: '退出成功' });
 });
 

@@ -93,7 +93,7 @@ router.get('/getInfo', (req, res) => {
 //退出登录
 router.get('/logout', (req, res) => {
     //req.session.user = null;
-    req.session.destroy();
+    req.session.destroy();//销毁session，同时在req.session中被移除，但是在下一次请求的时候又会被创建
     res.status(200).json({ code: '00', message: '退出成功' });
 });
 

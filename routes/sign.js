@@ -4,11 +4,11 @@ const mongoose = require('mongoose');
 const Schema = require('../model');
 //const crypto = require('crypto');//密码加密
 //const md5 = crypto.createHash('md5');
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 
 
-router.use(bodyParser.urlencoded({ extended: true }));
-router.use(bodyParser.json());
+//router.use(bodyParser.urlencoded({ extended: true }));
+//router.use(bodyParser.json());
 
 const Users = mongoose.model('Users', Schema.UserSchema);
 
@@ -93,7 +93,6 @@ router.get('/getInfo', (req, res) => {
 //退出登录
 router.get('/logout', (req, res) => {
     req.session.user = null;
-    req.session.maxAge=0;
     res.status(200).json({ code: '00', message: '退出成功' });
 });
 

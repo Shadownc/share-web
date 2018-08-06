@@ -6,6 +6,7 @@ const routes = require('./routes')
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const config = require('./config');
+const bodyParser = require('body-parser');
 
 //连接数据库
 mongoose.connect(config.mongodb);
@@ -18,6 +19,17 @@ db.once('open', function () {
 
 //创建app对象
 const app = express()
+
+app.use(function(req, res, next) { 
+  res.header("Access-Control-Allow-Origin", "*"); 
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+// urlencoded: 设置编码方式
+// 返回的是一个对象，当extended为false的时候，键值对中的值就为'String'或'Array'类型，为true的时候，则可为任何数据类型
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // 设置模板目录
 //app.set('views', path.join(__dirname, 'views'))

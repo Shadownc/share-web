@@ -86,7 +86,7 @@ router.post('/getData', (req, res) => {
                     console.log(err);
                 } else {
                     if (lists.length == 0) {
-                        res.status(200).json({ code: '00', message: '还未有任何收藏' });
+                        res.status(200).json({ code: '00', lists: [] });
                     } else {
                         let num = lists.length - 1;
                         id = lists[num].id;

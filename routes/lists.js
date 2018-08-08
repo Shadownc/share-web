@@ -85,9 +85,13 @@ router.post('/getData', (req, res) => {
                 if (err) {
                     console.log(err);
                 } else {
-                    let num = lists.length - 1;
-                    id = lists[num].id;
-                    res.status(200).json({ code: '00', lists: [...lists] });
+                    if (lists.length == 0) {
+                        res.status(200).json({ code: '00', message: '还未有任何收藏' });
+                    } else {
+                        let num = lists.length - 1;
+                        id = lists[num].id;
+                        res.status(200).json({ code: '00', lists: [...lists] });
+                    }
                 }
             });
     }

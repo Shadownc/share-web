@@ -57,6 +57,22 @@ router.post('/del', (req, res) => {
         }
     })
 })
+//修改编辑
+router.post('/edit', (req, res) => {
+    //修改参数--title urlLink description isTop
+    let { id, ...params } = req.body, userNick = req.session.user.name;
+    if (!userNick) {
+        res.status(200).json({ code: '01', message: '暂无权限,请登录或联系管理员' });
+        return
+    }
+    lists.update({ userNick: userNick, _id: id }, { $set: { ...params } }, (err, update) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.status(200).json({ code: '00', message: '修改成功' });
+        }
+    })
+})
 //获取当前用户的列表--分页
 router.post('/getData', (req, res) => {
     //console.log(req.body);

@@ -16,5 +16,4 @@ COPY . /srv/api
 EXPOSE 3000
 
 # 容器启动时执行的命令
-#CMD [ "pm2", "restart", "/srv/api/index.js" ]
 ENTRYPOINT ["node","index.js"]

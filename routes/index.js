@@ -4,6 +4,7 @@ module.exports = function (app) {
     // })
 
     app.use('/user', require('./sign'))
+    app.use('/user/list', require('./lists'))
 
     // 404 page
     app.use(function (req, res) {

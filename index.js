@@ -9,7 +9,7 @@ const config = require('./config');
 const bodyParser = require('body-parser');
 
 //连接数据库
-mongoose.connect(config.mongodb);
+mongoose.connect(config.mongodb, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
@@ -44,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'static')))
 //   res.send('shadow-api')
 // })
 
+//console.log(process.env.NODE_ENV,config.mongodb);
 app.use(session({
   name: config.session.key, // 设置 cookie 中保存 session id 的字段名称
   secret: config.session.secret, // 通过设置 secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改

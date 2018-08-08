@@ -34,10 +34,10 @@ router.post('/register', (req, res) => {
     }
     Users.find({ name: name }, (err, users) => {
         if (users.length > 0) {
-            res.send({ isSuccess: false, message: '用户名已存在' })
+            res.send({ code: '01', message: '用户名已存在' })
         } else { // 向Users集合中保存数据
             newUser.save(err => {
-                const datas = err ? { isSuccess: false } : { isSuccess: true, message: '注册成功' }
+                const datas = err ? { code: '01' } : { code: '00', message: '注册成功' }
                 res.send(datas);
             });
         }
@@ -66,6 +66,7 @@ router.post('/login', (req, res) => {
         }
         if (!user) {
             res.status(200).json({ code: '01', message: '用户不存在' });
+            return
         }
         if (password == user.password) {
             req.session.user = user; // 用户名存入session中
@@ -83,16 +84,17 @@ router.get('/getInfo', (req, res) => {
         return
     }
     let name = req.session.user.name;
-    Users.findOne({name:name}, { password: 0 }, (err, user) => {//排除密码字段
+    Users.findOne({ name: name }, { password: 0 }, (err, user) => {//排除密码字段
         if (err) {
             console.log(err);
         }
-        res.status(200).json({code:'00',userInfo:user});
+        res.status(200).json({ code: '00', userInfo: user });
     });
 });
 //退出登录
 router.get('/logout', (req, res) => {
     //req.session.user = null;
+    //res.clearCookie('shadow');
     req.session.destroy();//销毁session，同时在req.session中被移除，但是在下一次请求的时候又会被创建
     res.status(200).json({ code: '00', message: '退出成功' });
 });

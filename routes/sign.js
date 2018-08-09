@@ -6,8 +6,6 @@ const Schema = require('../model');
 //const md5 = crypto.createHash('md5');
 //const bodyParser = require('body-parser');
 const multer = require('multer'),
-    fs = require('fs'),
-    path = require('path'),
     upload = multer({
         storage: multer.diskStorage({
             destination: function (req, file, cb) {

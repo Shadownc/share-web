@@ -5,6 +5,21 @@ const Schema = require('../model');
 //const crypto = require('crypto');//密码加密
 //const md5 = crypto.createHash('md5');
 //const bodyParser = require('body-parser');
+const multer = require('multer'),
+    fs = require('fs'),
+    path = require('path'),
+    upload = multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                cb(null, 'static/images')//文件存放目录
+            },
+            filename: function (req, file, cb) {
+                let arr = file.originalname.split('.');
+                cb(null, `${arr[0]}-${Date.now()}.${arr[file.originalname.split('.').length - 1]}`)//原文件名+时间戳
+            }
+        })
+    });
+// upload = multer({ dest: 'static/images' });
 
 
 //router.use(bodyParser.urlencoded({ extended: true }));
@@ -97,6 +112,19 @@ router.get('/logout', (req, res) => {
     //res.clearCookie('shadow');
     req.session.destroy();//销毁session，同时在req.session中被移除，但是在下一次请求的时候又会被创建
     res.status(200).json({ code: '00', message: '退出成功' });
+});
+//上传图片
+router.post('/upload', upload.single('file'), (req, res, next) => {
+    //console.log(req.file);
+    if (!req.file) {
+        res.status(200).json({ code: '01', message: '请选择文件' });
+        return
+    }
+    let port = process.env.NODE_ENV !== 'development' ? '' : `:3000`;
+    res.status(200).json({
+        code: '00',
+        path: `${req.protocol}://${req.hostname}${port}/images/${req.file.filename}`
+    });
 });
 
 module.exports = router
